@@ -210,30 +210,26 @@ p {
     text-align: center;
 }
 
-.profile-placeholder {
-    width: 150px;
-    height: 150px;
+.profile-image-wrapper {
+    width: 200px;
+    height: 200px;
     margin: 0 auto 2rem;
-    background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-card));
-    border: 3px solid var(--accent-primary);
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
+    border: 3px solid var(--accent-primary);
     box-shadow: 0 0 30px var(--accent-glow);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.profile-placeholder:hover {
+.profile-image-wrapper:hover {
     transform: scale(1.05);
     box-shadow: 0 0 40px var(--accent-glow);
 }
 
-.profile-initials {
-    font-family: var(--font-mono);
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--accent-primary);
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .hero-title {
@@ -617,13 +613,9 @@ p {
         font-size: 0.875rem;
     }
 
-    .profile-placeholder {
-        width: 120px;
-        height: 120px;
-    }
-
-    .profile-initials {
-        font-size: 2.5rem;
+    .profile-image-wrapper {
+        width: 160px;
+        height: 160px;
     }
 
     .education-card {
