@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Operations toolkit — Marwan Magdy</title>
+<meta name="description" content="A toolkit of web tools for a government contact center with no in-house tooling: health monitoring, log collection with call tracing, and IVR analytics, under strict security rules.">
+<meta name="color-scheme" content="dark light">
+<link rel="canonical" href="https://marwanmagdy.com/work/toolkit.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://marwanmagdy.com/work/toolkit.html">
+<meta property="og:title" content="Operations toolkit — Marwan Magdy">
+<meta property="og:description" content="A toolkit of web tools for a government contact center with no in-house tooling: health monitoring, log collection with call tracing, and IVR analytics, under strict security rules.">
+<meta property="og:image" content="https://marwanmagdy.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<script>(function(){try{var t=localStorage.getItem("mm-theme");if(!t)t=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){}})();</script>
+<link rel="preload" href="/assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/GeistMono-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="wrap">
+  <nav class="nav" aria-label="Main">
+    <a class="nav__home" href="/">← Marwan Magdy</a>
+    <div class="nav__links">
+      <a href="/#work">Work</a>
+      <a href="/#practice">Practice</a>
+      <a href="/#about">About</a>
+      <button type="button" class="theme" data-theme-toggle aria-label="Switch to light theme">
+        <span class="theme__dot" aria-hidden="true"></span><span data-theme-label>Light</span>
+      </button>
+      <a href="/#contact" class="btn btn--ghost" style="margin-left:6px;padding:11px 18px;min-height:0">Get in touch</a>
+    </div>
+  </nav>
+</header>
+<main id="main">
+<section class="wrap cs-head">
+  <span class="lab">Case study 01 — Operations toolkit</span>
+  <h1>A toolkit for a contact center that <span class="dim">had none.</span></h1>
+  <p class="lede">A high-volume government contact center on Cisco UCCE: about 20 Windows servers plus CUCM, Finesse, CUIC and VVB. Checking health meant signing in to each server. One problem call meant hours of log hunting. The IVR was a black box, and weekly schedules lived in spreadsheets.</p>
+  <dl class="cs-facts"><div><dt>Platform</dt><dd>Cisco UCCE 15 · ~20 Windows servers · CUCM, Finesse, CUIC, VVB</dd></div><div><dt>My role</dt><dd>Design, build and rollout</dd></div><div><dt>Output</dt><dd>6 web tools on one shared agent</dd></div><div><dt>Built with</dt><dd>PowerShell · C# · IIS · SQL · Cisco APIs</dd></div></dl>
+</section>
+
+<section class="wrap cs-block">
+  <h2>The rules I had to build within.</h2>
+  <div class="cols">
+    <div class="col"><h3>No software installs</h3><p>Only what the security team allowed: PowerShell, static HTML and JavaScript, ASP.NET handlers, and one service compiled from source on site.</p></div>
+    <div class="col"><h3>No stored Windows passwords</h3><p>Agents run as SYSTEM. The one appliance account is encrypted with DPAPI and used lockout-safe: one try, then pause.</p></div>
+    <div class="col"><h3>No listening ports</h3><p>Servers push their data to shares. The central side never signs in to a server and never calls into one.</p></div>
+  </div>
+</section>
+
+<section class="wrap cs-block">
+  <h2>How it fits together.</h2>
+  <figure class="hld" style="margin:0">
+<svg viewBox="0 0 1000 500" role="img" aria-labelledby="hld-t hld-d">
+  <title id="hld-t">Toolkit architecture</title>
+  <desc id="hld-d">Users reach a central IIS server over HTTPS. Windows servers push data to shares on it over SMB. The central server reads Cisco appliances over their APIs, and writes schedule XML to the workforce management system.</desc>
+  <rect class="box" x="380" y="20" width="240" height="56" rx="12"/>
+  <text class="t" x="500" y="45" text-anchor="middle">Users</text>
+  <text class="s" x="500" y="64" text-anchor="middle">Browser · HTTPS</text>
+
+  <path class="ln" d="M500 76 L500 130"/>
+  <polygon class="hd" points="500,140 494,128 506,128"/>
+
+  <rect class="box box--hot" x="250" y="144" width="500" height="150" rx="16"/>
+  <text class="t" x="500" y="176" text-anchor="middle">Central server · IIS</text>
+  <text class="m" x="500" y="202" text-anchor="middle">/healthcheck · /logcollector · /journey · /oamp · WFM</text>
+  <text class="s" x="500" y="228" text-anchor="middle">Jobs: health collector · journey aggregator · OAMP writer</text>
+  <text class="s" x="500" y="252" text-anchor="middle">Shares: HealthData$ · LogData$ · JourneyData$</text>
+  <text class="s" x="500" y="276" text-anchor="middle">No listening ports · read-only on every server</text>
+
+  <path class="ln--hot" d="M220 400 L220 300"/>
+  <polygon class="hd--hot" points="220,290 214,302 226,302"/>
+  <text class="m" x="236" y="348">SMB · agents push</text>
+
+  <path class="ln--hot" d="M790 300 L790 398"/>
+  <polygon class="hd--hot" points="790,408 784,396 796,396"/>
+  <text class="m" x="806" y="348">Cisco APIs · 8443</text>
+
+  <path class="ln" d="M750 219 L856 219"/>
+  <polygon class="hd" points="866,219 854,213 854,225"/>
+  <text class="m" x="803" y="206" text-anchor="middle">XML</text>
+  <rect class="box" x="866" y="190" width="120" height="58" rx="12"/>
+  <text class="t" x="926" y="215" text-anchor="middle" style="font-size:13px">WFM system</text>
+  <text class="s" x="926" y="233" text-anchor="middle" style="font-size:11px">import folder</text>
+
+  <rect class="box" x="40" y="400" width="380" height="80" rx="16"/>
+  <text class="t" x="230" y="428" text-anchor="middle">Windows servers · about 20</text>
+  <text class="s" x="230" y="448" text-anchor="middle">Router · PGs · CVP · AW-HDS · recording · WFM</text>
+  <text class="m" x="230" y="468" text-anchor="middle">one agent service each, running as SYSTEM</text>
+
+  <rect class="box" x="580" y="400" width="380" height="80" rx="16"/>
+  <text class="t" x="770" y="428" text-anchor="middle">Cisco appliances</text>
+  <text class="s" x="770" y="448" text-anchor="middle">CUCM · Finesse · CUIC · VVB</text>
+  <text class="m" x="770" y="468" text-anchor="middle">no agent · read centrally over their APIs</text>
+</svg>
+<figcaption class="lab" style="padding-top:18px">Data flows one way: servers push, the centre never signs in to them.</figcaption>
+</figure>
+</section>
+
+<section class="wrap cs-block" id="health">
+  <h2>Health Check <span class="dim">— every server on one page.</span></h2>
+  <div class="cs-two">
+    <p>An agent on each server reports every minute; the Cisco appliances are read centrally over their APIs. One page shows Windows services, CPU, memory, disks, event-log errors, clock drift, pending reboots, router state and which side is active, with alarms and 30 days of history.</p>
+    <p class="dim" style="font-size:15px">Before, checking the platform meant a remote session on each of twenty-odd servers, and nobody could say what the state had been at 6 PM yesterday.</p>
+  </div>
+  <div class="panel" style="flex:none">
+    <div class="panel__bar"><span class="on">/healthcheck · overview</span><span>Router side A active · 1 alarm</span></div>
+    <div class="panel__body">
+      <div class="rows">
+        <div><span class="k">ROUTER-A</span><span class="v">In service · duplex · CPU 24%</span><span class="ok">● Active</span></div>
+        <div><span class="k">ROUTER-B</span><span class="v">In service · duplex · CPU 18%</span><span class="ok">● Standby</span></div>
+        <div><span class="k">PG-1A</span><span class="v">All processes up</span><span class="ok">● Active</span></div>
+        <div><span class="k">CVP-A</span><span class="v">Disk D: at 88%</span><span class="warn">● Warning</span></div>
+        <div><span class="k">REC-2</span><span class="v">Recording service stopped</span><span class="alarm">● Alarm</span></div>
+        <div><span class="k">CUCM-PUB</span><span class="v">14 services checked over the API</span><span class="ok">● OK</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap cs-block" id="logs">
+  <h2>Call Log Collector <span class="dim">— one case, every log.</span></h2>
+  <div class="cs-two">
+    <p>Pick servers, log types and a time window, and get one zip per case with a merged event timeline. Find a call by number, call key or GUID, then trace it through router, peripheral gateway, CVP and VXML logs, following the extension and call IDs it discovers along the way. Appliance logs come through the Cisco log-collection API.</p>
+    <p class="dim" style="font-size:15px">Before, investigating one escalated call meant visiting every server by hand and reading four log formats side by side.</p>
+  </div>
+  <div class="panel" style="flex:none">
+    <div class="panel__bar"><span class="on">/logcollector · trace · call key 100234</span><span>4 servers · running</span></div>
+    <div class="panel__body">
+      <ul class="log" style="font-size:12.5px">
+        <li><span class="t">10:02:11</span><span>CVP-A · call start · IVR App A</span></li>
+        <li><span class="t">10:03:40</span><span>ROUTER · label returned → precision queue</span></li>
+        <li><span class="t">10:03:41</span><span>PG-1A · OPC offered to extension 4021</span></li>
+        <li><span class="t">10:03:42</span><span>PG-1A · JTAPI ringing</span></li>
+        <li><span class="t">10:05:02</span><span style="color:var(--accent)">PG-1A · JTAPI device out of service</span></li>
+      </ul>
+      <p class="dim" style="font-size:14px;margin:0">Likely cause: the agent's phone lost its registration mid-call.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap cs-block" id="journey">
+  <h2>Customer Journey <span class="dim">— what callers actually do.</span></h2>
+  <div class="cs-two">
+    <p>A flow map of each IVR application, built automatically from the application's own call flow, so new branches appear without anyone uploading anything. It shows how many callers pass each step, where they hang up, no-input and no-match rates, transfers and durations, joined with the historical call records. Caller numbers are masked and salted.</p>
+    <p class="dim" style="font-size:15px">The business could finally see the IVR as callers experience it, and decide menu changes from evidence rather than opinion.</p>
+  </div>
+  <div class="panel" style="flex:none">
+    <div class="panel__bar"><span class="on">/journey · IVR App A</span><span>Sample day · 10,000 calls</span></div>
+    <div class="panel__body">
+      <div class="rows">
+        <div><span class="k">WELCOME</span><span class="v">10,000 callers</span><span class="dim">—</span></div>
+        <div><span class="k">LANGUAGE</span><span class="v">9,640 continue</span><span class="warn">360 hang up</span></div>
+        <div><span class="k">MAIN MENU</span><span class="v">9,640 reach it</span><span class="alarm">11% no-match</span></div>
+        <div><span class="k">SELF-SERVE</span><span class="v">3,210 solved without an agent</span><span class="ok">●</span></div>
+        <div><span class="k">TO QUEUE</span><span class="v">5,180 ask for a person</span><span class="dim">—</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap cs-block">
+  <h2>Then I rebuilt the agents.</h2>
+  <p>The first agents were PowerShell tasks starting every minute. On memory-starved servers they went quiet for hours and log requests waited minutes. I measured it, then replaced them with one small Windows service per server, compiled on site from source, that does health, log collection and IVR reading, and continues from the old agents' state.</p>
+  <div class="cs-two" style="padding-top:12px">
+    <div>
+      <span class="lab" style="color:var(--accent)">Before · measured in production</span>
+      <div class="stat-row" style="padding-top:20px">
+        <div class="stat"><b class="hot">11 h</b><span>longest silence from one server</span></div>
+        <div class="stat"><b class="hot">10/22</b><span>servers sent only 30–75% of their reports</span></div>
+        <div class="stat"><b class="hot">2.5 min</b><span>worst wait for a log request to start</span></div>
+      </div>
+    </div>
+    <div>
+      <span class="lab" style="color:var(--ok)">After · design targets</span>
+      <div class="stat-row" style="padding-top:20px">
+        <div class="stat"><b class="good">1–2 s</b><span>per health check in a loaded process</span></div>
+        <div class="stat"><b class="good">~3 s</b><span>to pick up a log request</span></div>
+        <div class="stat"><b class="good">3&times;</b><span>appliances collected in parallel</span></div>
+      </div>
+      <p class="dim" style="font-size:14px;padding-top:16px">Figures to be replaced with measured production results.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap cs-block">
+  <h2>Built with</h2>
+  <div class="chips">
+    <span>PowerShell 5.1</span><span>C# · .NET Framework 4.8</span><span>ASP.NET handlers on IIS</span><span>HTML · CSS · JavaScript</span><span>SVG charts and flow maps</span><span>SQL Server (read-only)</span><span>Cisco VOS SOAP APIs</span><span>UCCE configuration REST API</span><span>SMB shares</span><span>DPAPI</span>
+  </div>
+</section>
+<div class="wrap"><div class="pager">
+  <a href="/#work"><span class="lab">Previous</span><span class="big">← All work</span></a>
+  <a href="/work/wfm.html" class="r"><span class="lab">Next</span><span class="big">WFM Forecast & Scheduler →</span></a>
+</div></div>
+</main>
+<footer class="wrap">
+  <div class="foot">
+    <span>&copy; <span data-year>2026</span> Marwan Magdy · Riyadh</span>
+    <span>Screens show sample data. Product names belong to their owners.</span>
+    <a href="/">Home ↑</a>
+  </div>
+</footer>
+<script src="/assets/main.js" defer></script>
+</body>
+</html>

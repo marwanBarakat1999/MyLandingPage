@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finesse End Call gadget — Marwan Magdy</title>
+<meta name="description" content="A Cisco Finesse gadget that records whether the customer, the agent's desktop or the phone ended each call. Includes a live, interactive demo.">
+<meta name="color-scheme" content="dark light">
+<link rel="canonical" href="https://marwanmagdy.com/work/end-call-gadget.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://marwanmagdy.com/work/end-call-gadget.html">
+<meta property="og:title" content="Finesse End Call gadget — Marwan Magdy">
+<meta property="og:description" content="A Cisco Finesse gadget that records whether the customer, the agent's desktop or the phone ended each call. Includes a live, interactive demo.">
+<meta property="og:image" content="https://marwanmagdy.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<script>(function(){try{var t=localStorage.getItem("mm-theme");if(!t)t=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){}})();</script>
+<link rel="preload" href="/assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/GeistMono-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="wrap">
+  <nav class="nav" aria-label="Main">
+    <a class="nav__home" href="/">← Marwan Magdy</a>
+    <div class="nav__links">
+      <a href="/#work">Work</a>
+      <a href="/#practice">Practice</a>
+      <a href="/#about">About</a>
+      <button type="button" class="theme" data-theme-toggle aria-label="Switch to light theme">
+        <span class="theme__dot" aria-hidden="true"></span><span data-theme-label>Light</span>
+      </button>
+      <a href="/#contact" class="btn btn--ghost" style="margin-left:6px;padding:11px 18px;min-height:0">Get in touch</a>
+    </div>
+  </nav>
+</header>
+<main id="main">
+<section class="wrap cs-head">
+  <span class="lab">Case study 05 — Finesse End Call gadget</span>
+  <h1>Who really <span class="dim">ended the call?</span></h1>
+  <p class="lede">Reporting could not tell whether a call ended because the customer hung up, because the agent used the desktop, or because the agent dropped the handset. Supervisors were guessing. A small gadget made the answer exact, and then taught me a lesson about hold.</p>
+  <dl class="cs-facts"><div><dt>Platform</dt><dd>Cisco Finesse · UCCE · CUIC</dd></div><div><dt>Built with</dt><dd>JavaScript · Finesse REST API · SQL</dd></div><div><dt>Shipped</dt><dd>Production, every agent</dd></div><div><dt>Now at</dt><dd>Version 2.2</dd></div></dl>
+</section>
+
+<section class="wrap cs-block">
+  <h2>Try it. <span class="dim">Then try to break it.</span></h2>
+  <p>A simulation of the agent desktop, with the gadget in it. Switch to version 2.1, consult a supervisor, end the consult, then press the button again while the customer is on hold — that is the bug agents found. Then switch to 2.2 and try the same thing.</p>
+
+  <div class="demo" data-demo>
+    <div class="demo__head">
+      <span class="demo__title"><i aria-hidden="true"></i>Live demo</span>
+      <div class="vswitch" role="group" aria-label="Gadget version">
+        <button type="button" data-version="2.1" aria-pressed="false">v2.1</button>
+        <button type="button" data-version="2.2" aria-pressed="true">v2.2 · current</button>
+      </div>
+    </div>
+    <div class="demo__grid">
+      <div class="demo__left">
+        <div class="desk">
+          <div class="desk__bar">
+            <span>agent desktop · call control</span>
+            <span class="desk__state" data-d-statewrap><i aria-hidden="true"></i><span data-d-state>Talking</span></span>
+          </div>
+          <div class="desk__cols">
+            <div class="desk__info">
+              <span><span class="k">Caller</span><span class="v">+966 5• ••• ••21</span></span>
+              <span><span class="k">Call type</span><span class="v">General enquiries · AR</span></span>
+              <span><span class="k">callVariable10</span><span class="v" data-d-var>not set</span></span>
+            </div>
+            <div class="desk__ctl" data-d-ctl></div>
+          </div>
+        </div>
+
+        <div class="bug" data-d-bug hidden>
+          <b>That's the v2.1 bug.</b>
+          <span>The variable now says the agent ended the call, but the customer is still on hold, and Retrieve keeps sending them back. Switch to v2.2 and try the same steps.</span>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span class="lab">What else happens on the call</span>
+          <div class="acts">
+            <button type="button" data-a-consult>Consult supervisor</button>
+            <button type="button" data-a-hold>Put on hold</button>
+            <button type="button" data-a-handset>Hang up the phone</button>
+            <button type="button" data-a-customer>Customer hangs up</button>
+          </div>
+          <button type="button" class="reset" data-a-reset>↺ New call</button>
+        </div>
+      </div>
+
+      <div class="demo__right">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span class="lab">CUIC report · ended by</span>
+          <div class="verdict">
+            <b data-d-verdict>Call in progress</b>
+            <span data-d-note>The report fills in when the call ends.</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;flex:1">
+          <span class="lab">Event log · newest first</span>
+          <ul class="log" data-d-log></ul>
+        </div>
+        <span class="dim" style="font-size:12px">Simulation with sample data. No real system is called.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap cs-block">
+  <h2>How it decides.</h2>
+  <ol class="steps">
+    <li><span class="n">01</span><span class="t"><b>The gadget replaces the stock End button</b><span>Pressing it sends a drop through the Finesse REST API and writes a call variable on the call itself.</span></span></li>
+    <li><span class="n">02</span><span class="t"><b>The report reads the call record</b><span>Customer and system disconnects come from the call's own disposition. A set variable means the agent used the desktop. Anything else the agent ended was the handset.</span></span></li>
+    <li><span class="n">03</span><span class="t"><b>It survives real life</b><span>It waits for a slow-loading desktop, recovers if the agent refreshes mid-call, and follows consult and hold states instead of assuming one call leg.</span></span></li>
+  </ol>
+</section>
+
+<section class="wrap cs-block">
+  <h2>Built in a lab, hardened by agents.</h2>
+  <div class="cols">
+    <div class="col"><span class="lab">v1 · lab</span><h3>Proven on a test system</h3><p>Drop through the API, write the variable, confirm it lands in the call record. Learned the gadget has to live in a tab for the desktop's proxy to work.</p></div>
+    <div class="col"><span class="lab">v2 · production</span><h3>Live, with its report</h3><p>Deployed for every agent, with a report showing how each call ended. Added start-up polling and mid-call refresh recovery.</p></div>
+    <div class="col"><span class="lab">v2.1 · states</span><h3>Consult and hold aware</h3><p>The button became "end consult" during a consult and "end" on hold. Agents found the edge: ending a held call left it stuck on hold.</p></div>
+    <div class="col col--build"><span class="lab" style="color:var(--accent)">v2.2 · the fix</span><h3>Retrieve first</h3><p>The button hides while the customer is on hold, so it can only end a call that is really connected. Simple, and the report stays true.</p></div>
+  </div>
+</section>
+
+<section class="wrap cs-block">
+  <h2>What I take from it.</h2>
+  <p>A reporting field is a promise. If it says the agent ended the call, every supervisor conversation built on it has to be true. The interesting part of this build was not the API call; it was the three weeks afterwards, listening to agents describe a situation I had not modelled, and choosing the fix that removed the ambiguity rather than the one that covered it up.</p>
+</section>
+<div class="wrap"><div class="pager">
+  <a href="/work/barqiya.html"><span class="lab">Previous</span><span class="big">← Barqiya</span></a>
+  <a href="/#work" class="r"><span class="lab">Next</span><span class="big">All work →</span></a>
+</div></div>
+</main>
+<footer class="wrap">
+  <div class="foot">
+    <span>&copy; <span data-year>2026</span> Marwan Magdy · Riyadh</span>
+    <span>Screens show sample data. Product names belong to their owners.</span>
+    <a href="/">Home ↑</a>
+  </div>
+</footer>
+<script src="/assets/main.js" defer></script>
+</body>
+</html>

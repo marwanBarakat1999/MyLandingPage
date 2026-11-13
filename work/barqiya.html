@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Barqiya — Marwan Magdy</title>
+<meta name="description" content="A cloud contact center for Saudi restaurants: one number for calls and WhatsApp, simple menus and queues, every order on one screen.">
+<meta name="color-scheme" content="dark light">
+<link rel="canonical" href="https://marwanmagdy.com/work/barqiya.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://marwanmagdy.com/work/barqiya.html">
+<meta property="og:title" content="Barqiya — Marwan Magdy">
+<meta property="og:description" content="A cloud contact center for Saudi restaurants: one number for calls and WhatsApp, simple menus and queues, every order on one screen.">
+<meta property="og:image" content="https://marwanmagdy.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<script>(function(){try{var t=localStorage.getItem("mm-theme");if(!t)t=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){}})();</script>
+<link rel="preload" href="/assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/GeistMono-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="wrap">
+  <nav class="nav" aria-label="Main">
+    <a class="nav__home" href="/">← Marwan Magdy</a>
+    <div class="nav__links">
+      <a href="/#work">Work</a>
+      <a href="/#practice">Practice</a>
+      <a href="/#about">About</a>
+      <button type="button" class="theme" data-theme-toggle aria-label="Switch to light theme">
+        <span class="theme__dot" aria-hidden="true"></span><span data-theme-label>Light</span>
+      </button>
+      <a href="/#contact" class="btn btn--ghost" style="margin-left:6px;padding:11px 18px;min-height:0">Get in touch</a>
+    </div>
+  </nav>
+</header>
+<main id="main">
+<section class="wrap cs-head">
+  <span class="lab">Case study 04 — Barqiya · In development</span>
+  <h1>A contact center <span class="dim">small enough for a restaurant.</span></h1>
+  <p class="lede">Enterprise contact centers cost more than a restaurant earns in a year. Barqiya takes the parts that matter — one number, a simple menu, a queue, and every order on one screen — and makes them affordable for Saudi small businesses. Arabic first, built on an open-source voice core.</p>
+  <dl class="cs-facts"><div><dt>Status</dt><dd>In development · early access</dd></div><div><dt>Market</dt><dd>Saudi SME restaurants</dd></div><div><dt>Stack</dt><dd>FreeSWITCH · Azure · WhatsApp</dd></div><div><dt>My role</dt><dd>Product, architecture and build</dd></div></dl>
+</section>
+
+<section class="wrap cs-block">
+  <div class="tabs" role="tablist" data-tabs aria-label="Barqiya sections">
+    <button type="button" role="tab" id="t-story" aria-controls="p-story" aria-selected="true">Story</button>
+    <button type="button" role="tab" id="t-hld" aria-controls="p-hld" aria-selected="false" tabindex="-1">Architecture</button>
+    <button type="button" role="tab" id="t-design" aria-controls="p-design" aria-selected="false" tabindex="-1">Design</button>
+    <button type="button" role="tab" id="t-dec" aria-controls="p-dec" aria-selected="false" tabindex="-1">Decisions</button>
+    <button type="button" role="tab" id="t-road" aria-controls="p-road" aria-selected="false" tabindex="-1">Roadmap</button>
+  </div>
+
+  <div class="tabpanel" id="p-story" role="tabpanel" aria-labelledby="t-story">
+    <h2>A missed call is a missed order.</h2>
+    <p>A busy restaurant answers its phone when someone has a hand free. Orders arrive on WhatsApp and sit unread. Nobody knows how many calls were missed last night, because nothing counted them. The tools that solve this for banks and government are priced for banks and government.</p>
+    <p>Barqiya gives a small business one number for calls and WhatsApp, a menu that routes to the right branch, a queue so callers are not dropped, and a single screen where every order is captured and confirmed. The daily numbers it keeps — orders, missed calls, time to answer — are the first time most owners see their own front desk measured.</p>
+  </div>
+
+  <div class="tabpanel" id="p-hld" role="tabpanel" aria-labelledby="t-hld" hidden>
+    <h2>How it is put together.</h2>
+    <div class="cs-two">
+      <p>Voice runs on FreeSWITCH, with calls arriving over SIP from a local carrier. WhatsApp arrives through Azure Communication Services. Both land in the same flow engine, which reads a JSON definition per tenant rather than dialplan XML, so a menu change is data and not a deployment.</p>
+      <p>Routing picks an agent from Postgres at the moment a call needs one, using the skills recorded for each branch. One URL serves every tenant, with the separation enforced on the server. It runs in Azure, and moves to the Saudi region as the product reaches general availability.</p>
+    </div>
+    <div class="rows" style="max-width:760px">
+      <div><span class="k">VOICE</span><span class="v">FreeSWITCH · SIP from a local carrier</span><span class="dim">Phase 1</span></div>
+      <div><span class="k">MESSAGING</span><span class="v">WhatsApp via Azure Communication Services</span><span class="dim">Phase 1</span></div>
+      <div><span class="k">FLOWS</span><span class="v">JSON flow engine, one definition per tenant</span><span class="dim">Phase 1</span></div>
+      <div><span class="k">ROUTING</span><span class="v">Skills-based, resolved in Postgres at routing time</span><span class="dim">Phase 1</span></div>
+      <div><span class="k">IDENTITY</span><span class="v">Microsoft Entra External ID</span><span class="dim">Phase 1</span></div>
+      <div><span class="k">HOSTING</span><span class="v">Azure · multi-tenant behind one URL</span><span class="dim">Phase 1</span></div>
+    </div>
+  </div>
+
+  <div class="tabpanel" id="p-design" role="tabpanel" aria-labelledby="t-design" hidden>
+    <h2>Designed for a phone on a counter.</h2>
+    <div class="cs-two">
+      <p>The person using this is standing up, in a kitchen, with one hand. So the screen shows today's numbers, the order that just arrived, and two buttons: confirm or edit. Arabic is the default language and the layout is right to left from the start, not flipped afterwards. Numerals are Arabic-Indic, because that is what the staff read.</p>
+      <p class="dim" style="font-size:15px">Screens below use sample data.</p>
+    </div>
+    <div class="panel ar" lang="ar" dir="rtl" style="flex:none;max-width:420px">
+      <div class="panel__bar"><span class="on" style="font-weight:600">الطلبات</span><span style="display:flex;align-items:center;gap:7px;color:var(--ok)"><span class="blink" aria-hidden="true"></span>مباشر</span></div>
+      <div class="ar-body">
+        <div class="ar-stats">
+          <div><b>٤٨</b><span>طلبات اليوم</span></div>
+          <div><b>٢</b><span>مكالمات فائتة</span></div>
+          <div><b>١٨ث</b><span>زمن الرد</span></div>
+        </div>
+        <div class="ar-card">
+          <div class="ar-card__top"><span style="font-weight:600">طلب جديد · واتساب</span><span class="dim">الآن</span></div>
+          <div class="ar-card__items">٢ برجر دجاج · ١ بطاطس كبيرة · توصيل</div>
+          <div class="ar-card__act"><span class="go">تأكيد الطلب</span><span class="alt">تعديل</span></div>
+        </div>
+        <div class="ar-card" style="flex-direction:row;justify-content:space-between;align-items:center;font-size:14px">
+          <span style="font-weight:600">مكالمة واردة · الفرع الرئيسي</span><span class="mono" style="color:var(--accent)">٠٠:٤٢</span>
+        </div>
+        <div class="ar-card" style="flex-direction:row;justify-content:space-between;font-size:14px;color:var(--muted)">
+          <span>طلب ١٠٤٧ · استلام</span><span>قيد التحضير</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabpanel" id="p-dec" role="tabpanel" aria-labelledby="t-dec" hidden>
+    <h2>Decisions, and why.</h2>
+    <ol class="steps">
+      <li><span class="n">01</span><span class="t"><b>FreeSWITCH over Asterisk</b><span>Better behaviour under concurrent load per instance, and a cleaner event interface for the flow engine to drive.</span></span></li>
+      <li><span class="n">02</span><span class="t"><b>A JSON flow engine, not dialplan XML</b><span>Menus become data a tenant can change, which means no deployment and no dialplan reload for a new branch or a new opening hour.</span></span></li>
+      <li><span class="n">03</span><span class="t"><b>Deterministic menus first, voice bot later</b><span>A restaurant needs its orders captured correctly tonight. Speech recognition is a Phase 2 improvement, not a Phase 1 risk.</span></span></li>
+      <li><span class="n">04</span><span class="t"><b>Skills resolved at routing time</b><span>Branch and language skills live in Postgres and are read when a call needs an agent, so changing staff does not mean rebuilding queues.</span></span></li>
+      <li><span class="n">05</span><span class="t"><b>One URL, server-side separation</b><span>Simpler for customers than a subdomain each, as long as tenancy is enforced on the server and never in the browser.</span></span></li>
+    </ol>
+  </div>
+
+  <div class="tabpanel" id="p-road" role="tabpanel" aria-labelledby="t-road" hidden>
+    <h2>Where it is going.</h2>
+    <div class="cols">
+      <div class="col"><span class="lab">Phase 1 · in progress</span><h3>Take the order</h3><p>Voice and WhatsApp into one queue, deterministic menus, order capture and the daily numbers.</p></div>
+      <div class="col"><span class="lab">Phase 2</span><h3>Understand the caller</h3><p>A voice bot for the common requests, and order history so a regular customer is recognised.</p></div>
+      <div class="col col--build"><span class="lab">At general availability</span><h3>Local and ready</h3><p>Move to the Saudi Azure region, and the commercial registration that comes with the first paying customers.</p></div>
+    </div>
+  </div>
+</section>
+<div class="wrap"><div class="pager">
+  <a href="/work/webex.html"><span class="lab">Previous</span><span class="big">← Webex Contact Center</span></a>
+  <a href="/work/end-call-gadget.html" class="r"><span class="lab">Next</span><span class="big">End Call gadget →</span></a>
+</div></div>
+</main>
+<footer class="wrap">
+  <div class="foot">
+    <span>&copy; <span data-year>2026</span> Marwan Magdy · Riyadh</span>
+    <span>Screens show sample data. Product names belong to their owners.</span>
+    <a href="/">Home ↑</a>
+  </div>
+</footer>
+<script src="/assets/main.js" defer></script>
+</body>
+</html>

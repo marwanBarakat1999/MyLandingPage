@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WFM forecast & scheduler — Marwan Magdy</title>
+<meta name="description" content="Erlang C forecast reports and a bilingual scheduler that validates every rule before the schedule reaches the workforce management system.">
+<meta name="color-scheme" content="dark light">
+<link rel="canonical" href="https://marwanmagdy.com/work/wfm.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://marwanmagdy.com/work/wfm.html">
+<meta property="og:title" content="WFM forecast & scheduler — Marwan Magdy">
+<meta property="og:description" content="Erlang C forecast reports and a bilingual scheduler that validates every rule before the schedule reaches the workforce management system.">
+<meta property="og:image" content="https://marwanmagdy.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<script>(function(){try{var t=localStorage.getItem("mm-theme");if(!t)t=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){}})();</script>
+<link rel="preload" href="/assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/GeistMono-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="wrap">
+  <nav class="nav" aria-label="Main">
+    <a class="nav__home" href="/">← Marwan Magdy</a>
+    <div class="nav__links">
+      <a href="/#work">Work</a>
+      <a href="/#practice">Practice</a>
+      <a href="/#about">About</a>
+      <button type="button" class="theme" data-theme-toggle aria-label="Switch to light theme">
+        <span class="theme__dot" aria-hidden="true"></span><span data-theme-label>Light</span>
+      </button>
+      <a href="/#contact" class="btn btn--ghost" style="margin-left:6px;padding:11px 18px;min-height:0">Get in touch</a>
+    </div>
+  </nav>
+</header>
+<main id="main">
+<section class="wrap cs-head">
+  <span class="lab">Case study 02 — WFM forecast &amp; scheduler</span>
+  <h1>They asked for a forecast. <span class="dim">The data showed a staffing problem.</span></h1>
+  <p class="lede">Operations wanted two things: predictions of call volume, and a way to stop schedules that broke the rules from reaching the workforce management system. Building the first showed service level running far below its target, so the request grew into a set of reports and a scheduling tool.</p>
+  <dl class="cs-facts"><div><dt>Ask</dt><dd>Forecast reports and safer schedule exports</dd></div><div><dt>Found</dt><dd>Service level far below the 90% target</dd></div><div><dt>Built</dt><dd>4 CUIC reports + a bilingual scheduler</dd></div><div><dt>Built with</dt><dd>SQL · CUIC · HTML/JS · ASP.NET</dd></div></dl>
+</section>
+
+<section class="wrap cs-block">
+  <h2>The forecast came first.</h2>
+  <p>Six weeks of history per call type, turned into expected volume and handle time per weekday, per week and per month. Erlang C then converts that into agents needed per shift to hit 90% of calls answered within 60 seconds, allowing for shrinkage and the fact that not every agent can take every call type.</p>
+  <ol class="steps">
+    <li><span class="n">01</span><span class="t"><b>Daily forecast</b><span>Volume, handle time and agents needed per day, in plain column names operations can read without a key.</span></span></li>
+    <li><span class="n">02</span><span class="t"><b>Shift plan per day</b><span>The same numbers split across the three shifts, which is where the real gap usually hides.</span></span></li>
+    <li><span class="n">03</span><span class="t"><b>Skill queue coverage</b><span>How many agents have access to each precision queue, against how many that queue needs.</span></span></li>
+    <li><span class="n">04</span><span class="t"><b>Skill queue shift plan</b><span>Coverage per queue per shift: the report that tells the workforce team exactly who to move, and where.</span></span></li>
+  </ol>
+</section>
+
+<section class="wrap cs-block">
+  <h2>What the numbers said.</h2>
+  <p>Run over six weeks of real traffic, the reports showed service level sitting well under target with a high abandon rate, and the cause was not a shortage of people overall. Some queues were short of agents with the right language skill while others had spare capacity on the same shift. That turns an expensive hiring conversation into a training and scheduling one.</p>
+  <p class="dim" style="font-size:15px">Actual figures stay with the client; the pattern is what the tool is for.</p>
+</section>
+
+<section class="wrap cs-block">
+  <h2>Then the schedule itself.</h2>
+  <div class="cs-two">
+    <p>A scheduler in English and Arabic, right to left, where a week is painted from shift templates with undo, redo and copy-last-week. Every change is checked live against the rules: minimum rest days, staff per interval, uncovered intervals, maximum consecutive days, hours between shifts, Ramadan hours and headcount against plan.</p>
+    <p>The staffing plan imports straight from the forecast report, so the grid shows plan against schedule with a fill-the-gap assistant. The finished week exports as schedule XML and is delivered to the workforce management system's import folder with its status tracked, instead of being hand-carried and rejected.</p>
+  </div>
+  <div class="panel" style="flex:none">
+    <div class="panel__bar"><span class="on">Validation · week 47</span><span>2 issues before export</span></div>
+    <div class="panel__body">
+      <div class="rows">
+        <div><span class="k">TUE · PM</span><span class="alarm">3 agents short of plan at 15:00</span><span class="dim">fill the gap</span></div>
+        <div><span class="k">AGENT 04</span><span class="warn">7 days in a row · the limit is 6</span><span class="dim">rest day</span></div>
+        <div><span class="k">EXPORT</span><span class="v">Schedule XML → WFM import folder</span><span class="ok">● Waiting</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap cs-block">
+  <h2>What changed</h2>
+  <div class="cols">
+    <div class="col"><h3>Schedules pass before they leave</h3><p>Rule breaks are caught in the browser, not by the WFM system after import, so a rejected week no longer costs a day.</p></div>
+    <div class="col"><h3>Staffing tied to the target</h3><p>Every shift has a number behind it, and the workforce team can see which queue the next trained agent should go to.</p></div>
+    <div class="col col--build"><h3>Readable by operations</h3><p>Four focused reports with plain column names and guides in English and Arabic, instead of one report nobody could use.</p></div>
+  </div>
+</section>
+<div class="wrap"><div class="pager">
+  <a href="/work/toolkit.html"><span class="lab">Previous</span><span class="big">← Operations toolkit</span></a>
+  <a href="/work/webex.html" class="r"><span class="lab">Next</span><span class="big">Webex Contact Center →</span></a>
+</div></div>
+</main>
+<footer class="wrap">
+  <div class="foot">
+    <span>&copy; <span data-year>2026</span> Marwan Magdy · Riyadh</span>
+    <span>Screens show sample data. Product names belong to their owners.</span>
+    <a href="/">Home ↑</a>
+  </div>
+</footer>
+<script src="/assets/main.js" defer></script>
+</body>
+</html>
